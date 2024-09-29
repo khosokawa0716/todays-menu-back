@@ -1,0 +1,36 @@
+name: Deploy to Xserver
+
+on:
+  push:
+    branches:
+      - main  # mainブランチへのプッシュでデプロイを実行
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          extensions: mbstring, pdo, mysql
+
+      - name: Install dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+      - name: Deploy to Xserver via SSH
+        uses: appleboy/ssh-action@v0.1.1
+        with:
+          host: sv5320.xserver.jp
+          username: turedureblog
+          key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDEWF9XPAoYQC+HEjlofGQPgyqQa1z6Ul6MgT0ulox07Yan9SnFJhBq4TEwVqAMWnWsH2DCNTl5u1Z63LPbeTiaPLevdXzsie60qDVO7WiXTx3Etti/2JWm8TfmhLMi6cPRgqMNVE7DojoiJ0OpT8Ca2HMp1AKOLTHf6JBsyBB6BAzVMY+OlD4LeIXOgzCrwW4WQgzjz7Jjg5Jt1Vy2XLlWRYHVLX6OV7M6sOMV4mV4xfJMLgboGBm+D6xVpxLyjEAHF+EiJcQrufFRWJnPdVTtjhuJPqreL1goxXBETAZBwXe1Z7+NQDluHde+PgDSpmJpnGVyjqroWqPIGTLAfP6r turedureblog@sv5320.xserver.jp
+          port: 22
+          script: |
+            cd ~/turedureblog.xsrv.jp/public_html/todays-menu-back
+            git pull origin main
+            php artisan migrate --force
+            php artisan cache:clear

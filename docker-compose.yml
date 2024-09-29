@@ -1,0 +1,26 @@
+services:
+  app:
+    image: bitnami/laravel:latest
+    container_name: todays_menu_back
+    ports:
+      - "8050:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todays_menu
+      MYSQL_USER: user
+      MYSQL_PASSWORD: moyashi
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
