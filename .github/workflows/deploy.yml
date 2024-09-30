@@ -1,33 +1,24 @@
 name: Deploy to Server
-
 on:
   push:
     branches:
       - main
-
+      
 jobs:
-  deploy:
+  job1:
+    name: Deploy
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Start SSH Agent
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Deploy to Server
-      uses: appleboy/ssh-action@v0.1.1
-      with:
-        host: ${{ secrets.XSERVER_HOST }}
-        username: ${{ secrets.XSERVER_USER }}
-        port: 10022
-        script: |
-          cd ~/public_html/todays-menu-back
-          git pull origin main
-          php artisan migrate --force
-          php artisan cache:clear
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        debug: true
+      - name: ssh and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/public_html/todays-menu-back
+            git pull origin main
+            php artisan migrate --force
+            php artisan cache:clear
+          debug: true
