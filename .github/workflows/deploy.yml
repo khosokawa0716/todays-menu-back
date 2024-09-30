@@ -29,5 +29,4 @@ jobs:
           git pull origin main
           php artisan migrate --force
           php artisan cache:clear
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
         debug: true
