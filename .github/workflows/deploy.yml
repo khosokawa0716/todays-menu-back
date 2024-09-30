@@ -1,36 +1,33 @@
-name: Deploy to Xserver
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main  # mainブランチへのプッシュでデプロイを実行
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2.22'
-          extensions: mbstring, pdo, mysql
+    - name: Start SSH Agent
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader
-
-      - name: Deploy to Xserver via SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          host: ${{ secrets.XSERVER_HOST }}        # Xserverのホスト名
-          username: ${{ secrets.XSERVER_USER }}    # Xserverのユーザー名
-          key: ${{ secrets.SSH_PRIVATE_KEY }}      # GitHub Secretsに登録したSSHの秘密鍵
-          port: 10022
-          script: |
-            cd ~/public_html/todays-menu-back
-            git pull origin main
-            php artisan migrate --force
-            php artisan cache:clear
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@v0.1.1
+      with:
+        host: ${{ secrets.XSERVER_HOST }}
+        username: ${{ secrets.XSERVER_USER }}
+        port: 10022
+        script: |
+          cd ~/public_html/todays-menu-back
+          git pull origin main
+          php artisan migrate --force
+          php artisan cache:clear
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        debug: true
