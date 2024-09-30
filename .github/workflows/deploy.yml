@@ -23,7 +23,7 @@ jobs:
         run: composer install --no-dev --prefer-dist --optimize-autoloader
 
       - name: Deploy to Xserver via SSH
-        uses: appleboy/ssh-action@v0.1.1
+        uses: webfactory/ssh-agent@v0.5.3
         with:
           host: ${{ secrets.XSERVER_HOST }}        # Xserverのホスト名
           username: ${{ secrets.XSERVER_USER }}    # Xserverのユーザー名
