@@ -30,4 +30,5 @@ jobs:
           git pull origin main
           php artisan migrate --force
           php artisan cache:clear
+        skip_host_key_check: true
         debug: true
