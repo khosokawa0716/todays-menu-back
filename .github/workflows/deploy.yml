@@ -25,7 +25,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         port: 10022
         script: |
-          cd //home/sv5320/turedureblog.xsrv.jp/public_html
+          cd /home/sv5320/turedureblog.xsrv.jp/public_html
           git pull origin main
           php artisan migrate --force
           php artisan cache:clear
