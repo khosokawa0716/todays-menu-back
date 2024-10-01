@@ -31,4 +31,6 @@ jobs:
           php artisan migrate --force
           php artisan cache:clear
         debug: true
-        use_insecure_cipher: true  # 必要であれば追加
+        timeout: 60s  # タイムアウトを延長してみる
+        cipher: aes256-cbc  # より互換性の高い暗号化方式を試す
+
