@@ -19,7 +19,7 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Deploy to Server
-      uses: appleboy/ssh-action@v0.1.6
+      uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
