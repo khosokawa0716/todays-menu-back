@@ -8,16 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    # steps:
-    # - name: Checkout code
-    #   uses: actions/checkout@v2
-
-    # - name: Start SSH Agent
-    #   uses: webfactory/ssh-agent@v0.5.3
-    #   with:
-    #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
     - name: Deploy to Server
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -30,7 +20,3 @@ jobs:
           git pull origin main
           php artisan migrate --force
           php artisan cache:clear
-        # debug: true
-        # timeout: 60s  # タイムアウトを延長してみる
-        # cipher: aes256-cbc  # より互換性の高い暗号化方式を試す
-
