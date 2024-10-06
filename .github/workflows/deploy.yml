@@ -21,7 +21,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 10022
         script: |
-          cd /home/sv5320/turedureblog.xsrv.jp/public_html
+          cd /turedureblog.xsrv.jp/todays-menu-back
           git pull origin main
           php artisan migrate --force
           php artisan cache:clear
