@@ -19,7 +19,6 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        passphrase: ''
         port: 10022
         script: |
           cd /home/sv5320/turedureblog.xsrv.jp/public_html
