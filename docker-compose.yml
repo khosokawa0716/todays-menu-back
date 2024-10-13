@@ -6,6 +6,7 @@ services:
       - "8050:8000"
     volumes:
       - .:/app
+      - /app/.git
     depends_on:
       - db
 
