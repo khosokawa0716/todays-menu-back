@@ -1,15 +1,30 @@
 services:
+  # PHP-FPMコンテナ
   app:
-    image: bitnami/laravel:latest
+    build:
+      context: .
     container_name: todays_menu_back
-    ports:
-      - "8050:8000"
+    working_dir: /var/www
     volumes:
-      - .:/app
-      - /app/.git
-    depends_on:
-      - db
+      - .:/var/www
+    networks:
+      - app-network
 
+  # Nginxコンテナ
+  webserver:
+    image: nginx:alpine
+    container_name: laravel_webserver
+    volumes:
+      - .:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8050:80"
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  # MySQLコンテナ
   db:
     image: mysql:5.7
     container_name: mysql_db
@@ -22,6 +37,13 @@ services:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   dbdata:
+
