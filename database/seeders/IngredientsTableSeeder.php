@@ -28,6 +28,20 @@ class IngredientsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'にんじん',
+                'category' => '野菜',
+                'unit' => '個',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'ジャガイモ',
+                'category' => '野菜',
+                'unit' => '個',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }
